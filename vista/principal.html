@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos</title>
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <style>
+    .category-link {
+      cursor: pointer;
+      transition: all 0.3s;
+      border-radius: 5px;
+      padding: 8px 12px;
+      margin-bottom: 5px;
+      display: block;
+    }
+    .category-link:hover, .category-link.active {
+      background-color: #f8f9fa;
+      transform: translateX(5px);
+    }
+    .product-card {
+      transition: transform 0.3s;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .categories-container {
+      border-right: 1px solid #eee;
+      padding-right: 20px;
+    }
+    @media (max-width: 768px) {
+      .categories-container {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        padding-right: 0;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link active" href="principal.html">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="crud.html">CRUD</a></li>
+        <!-- Botón de logout dinámico -->
+
+        <li class="nav-item" id="loginItem" style="display: none;">
+          <a class="nav-link" href="login.html">Iniciar Sesión</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  <div class="container my-5">
+    <h1 class="text-center mb-4">LISTA DE PRODUCTOS</h1>
+    <div class="row">
+      <div class="col-md-3 categories-container">
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Categorías</h5>
+          </div>
+          <div class="card-body">
+            <div id="categorias-menu">
+              <div class="category-link active" data-id="all">
+                <strong>Todos los productos</strong>
+              </div>
+              <!-- Las categorías se cargarán aquí con JavaScript -->
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-9">
+        <div id="productos-lista" class="row g-4">
+          <!-- Aquí se insertan los productos con js -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../app.js"></script>
+  <script>
+    // Verificar autenticación al cargar la página
+  if (localStorage.getItem('jwtToken')) {
+    // Mostrar botón de logout
+    const logoutItem = document.createElement('li');
+    logoutItem.className = 'nav-item';
+    logoutItem.innerHTML = '<a class="nav-link" href="#" id="logoutLink">Cerrar Sesión</a>';
+    document.querySelector('.navbar-nav').appendChild(logoutItem);
+    
+    document.getElementById('logoutLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      localStorage.removeItem('jwtToken');
+      window.location.reload();
+    });
+  }
+  </script>
+</body>
+</html>

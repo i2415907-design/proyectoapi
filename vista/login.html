@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión</title>
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+    .login-container {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      padding: 2rem;
+      width: 100%;
+      max-width: 400px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="login-container">
+          <h2 class="text-center mb-4">Iniciar Sesión</h2>
+          <form id="loginForm">
+            <div class="mb-3">
+              <label for="usuario" class="form-label">Usuario</label>
+              <input type="text" class="form-control" id="usuario" required>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña</label>
+              <input type="password" class="form-control" id="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+          </form>
+          <div id="errorMessage" class="alert alert-danger mt-3 d-none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const usuario = document.getElementById('usuario').value;
+  const password = document.getElementById('password').value;
+  
+  try {
+    const response = await fetch('http://localhost:3000/usuario/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ usuario, password })
+    });
+    
+    // Verificar si la respuesta es OK
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error en el login');
+    }
+    
+    const data = await response.json();
+    
+    if (data.token) {
+      // Guardar token en localStorage
+      localStorage.setItem('jwtToken', data.token);
+      // Redirigir a la página principal
+      window.location.href = 'principal.html';
+    } else {
+      mostrarError('Token no recibido');
+    }
+  } catch (error) {
+    console.error('Error en login:', error);
+    mostrarError(error.message || 'Error de conexión');
+  }
+});
+
+function mostrarError(mensaje) {
+  const errorDiv = document.getElementById('errorMessage');
+  errorDiv.textContent = mensaje;
+  errorDiv.classList.remove('d-none');
+}
+
+// Si ya está logueado, redirigir a principal
+if (localStorage.getItem('jwtToken')) {
+  window.location.href = 'principal.html';
+}
+</script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../app.js" defer></script>
+</body>
+</html>
