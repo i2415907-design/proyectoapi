@@ -560,6 +560,50 @@ function actualizarNavbar() {
     }
   }
 }
+
+// Función para manejar el registro de usuarios
+async function registrarUsuario(e) {
+    e.preventDefault();
+    
+    const usuario = document.getElementById('usuario').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    
+    if (password !== confirmPassword) {
+        alert('Las contraseñas no coinciden');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_URL}/usuario/registro`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ usuario, password})
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            alert('Usuario registrado exitosamente');
+            window.location.href = 'login.html';
+        } else {
+            alert('Error: ' + data.message);
+        }
+        
+    } catch (error) {
+        alert('Error de conexión');
+    }
+}
+
+// Agregar event listener para el formulario de registro
+document.addEventListener('DOMContentLoaded', function() {
+    const registroForm = document.getElementById('registroForm');
+    if (registroForm) {
+        registroForm.addEventListener('submit', registrarUsuario);
+    }
+});
 document.addEventListener('DOMContentLoaded', function() {
   // Verificar autenticación en cada página excepto login
   actualizarNavbar

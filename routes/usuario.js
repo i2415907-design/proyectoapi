@@ -69,6 +69,42 @@ router.get("/profile", verifyToken, async (req, res) => {
   }
 });
 
+router.post("/registro", async (req, res) => {
+  const { usuario, password } = req.body;
+
+  // Validaciones básicas
+  if (!usuario || !password) {
+    return res.status(400).json({ message: "Todos los campos son obligatorios" });
+  }
+
+  try {
+    // Verificar si el usuario ya existe - SOLO POR NOMBRE
+    const [existingUsers] = await pool.query(
+      "SELECT * FROM usuario WHERE nombre = ?",
+      [usuario]
+    );
+
+    if (existingUsers.length > 0) {
+      return res.status(409).json({ message: "El usuario ya existe" });
+    }
+
+    // Crear nuevo usuario
+    const [result] = await pool.query(
+      "INSERT INTO usuario (nombre, password) VALUES (?, MD5(?))",
+      [usuario, password]
+    );
+
+    res.status(201).json({ 
+      message: "Usuario registrado exitosamente",
+      id: result.insertId 
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error en el servidor al registrar usuario" });
+  }
+});
+
 // Exportar tanto el router como el middleware verifyToken
 module.exports = {
   router,
