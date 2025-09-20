@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de Producto</title>
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <style>
+    .product-image {
+      height: 400px;
+      object-fit: cover;
+      width: 100%;
+    }
+    .thumbnail {
+      height: 100px;
+      object-fit: cover;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+    .thumbnail:hover, .thumbnail.active {
+      opacity: 1;
+    }
+    .back-button {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="principal.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="crud.html">CRUD</a></li>
+          <!-- En la barra de navegación, agrega esto al final del ul -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container my-5">
+    <a href="principal.html" class="btn btn-secondary back-button">&larr; Volver</a>
+    
+    <div id="detalle-producto">
+      <!-- El detalle del producto se cargará aquí -->
+    </div>
+    
+    <div id="cargando" class="text-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <p class="mt-2">Cargando información del producto...</p>
+    </div>
+    
+    <div id="error" class="alert alert-danger d-none">
+      Error al cargar el producto. Por favor, intente nuevamente.
+    </div>
+  </div>
+
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../app.js" defer></script>
+</body>
+</html>
