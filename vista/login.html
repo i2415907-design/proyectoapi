@@ -56,7 +56,11 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
   const password = document.getElementById('password').value;
   
   try {
+<<<<<<< HEAD
     const response = await fetch('proyectoapi-y5uq.onrender.com/usuario/login', {
+=======
+    const response = await fetch('http://localhost:3000/usuario/login', {
+>>>>>>> ddff8a15223f5c051e0a74c04fc6af3bf4f8f155
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

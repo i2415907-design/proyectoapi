@@ -1,4 +1,5 @@
 // db.js
+<<<<<<< HEAD
 // Configuración de conexión a PostgreSQL usando la librería 'pg'
 
 const { Pool } = require('pg'); 
@@ -26,3 +27,16 @@ module.exports = {
     // La función 'query' recibe el texto SQL y los parámetros (valores).
     query: (text, params) => pool.query(text, params),
 };
+=======
+const mysql = require('mysql2');
+// Crear pool de conexiones para manejar múltiples requests
+const pool = mysql.createPool({
+host: 'localhost',
+user: 'root', // tu usuario de MySQL
+password: '', // tu contraseña de MySQL
+database: 'tienda'
+});
+// Promisify para usar async/await
+const promisePool = pool.promise();
+module.exports = promisePool;[]
+>>>>>>> ddff8a15223f5c051e0a74c04fc6af3bf4f8f155

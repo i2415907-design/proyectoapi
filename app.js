@@ -1,5 +1,9 @@
 // Configuración
+<<<<<<< HEAD
 const API_URL = "https://proyectoapi-y5uq.onrender.com";
+=======
+const API_URL = "http://localhost:3000";
+>>>>>>> ddff8a15223f5c051e0a74c04fc6af3bf4f8f155
 
 // Helpers
 function obtenerIdDeURL() {

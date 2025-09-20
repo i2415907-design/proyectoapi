@@ -15,7 +15,11 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+<<<<<<< HEAD
     "pg": "^8.16.3"
+=======
+    "mysql2": "^3.14.3"
+>>>>>>> ddff8a15223f5c051e0a74c04fc6af3bf4f8f155
   },
   "description": "",
   "devDependencies": {
