@@ -1,9 +1,4 @@
-// Configuración
-<<<<<<< HEAD
-const API_URL = "https://proyectoapi-y5uq.onrender.com";
-=======
-const API_URL = "http://localhost:3000";
->>>>>>> ddff8a15223f5c051e0a74c04fc6af3bf4f8f155
+const API_URL = "https://proyectoapi-y5uq.onrender.com"; // URL de la API de Render (CORREGIDA)
 
 // Helpers
 function obtenerIdDeURL() {
@@ -26,7 +21,7 @@ function logout() {
 }
 async function fetchWithAuth(url, options = {}) {
   const token = getToken();
-  const requiresAuth = !url.includes('/usuario/login');
+  const requiresAuth = !url.includes('/usuario/login') && !url.includes('/usuario/registro'); // Añadir exclusión para registro
   
   // Si requiere auth pero no hay token
   if (requiresAuth && !token) {
@@ -140,7 +135,7 @@ async function mostrarProductos(productos) {
   
   for (const p of productos) {
     try {
-      // ⚠️ CAMBIAR: Usar fetch normal en lugar de fetchWithAuth
+      // Usar fetch normal para imágenes, es una ruta pública
       const imgRes = await fetch(`${API_URL}/imagenes/${p.id}`);
       
       if (!imgRes.ok) {
@@ -244,7 +239,7 @@ function vincularClickMiniaturas() {
   thumbs.forEach(thumb => {
     thumb.addEventListener('click', () => {
       const url = thumb.getAttribute('data-url');
-      principal.src = url;z
+      principal.src = url;
       thumbs.forEach(t => t.classList.remove('active'));
       thumb.classList.add('active');
     });
@@ -252,8 +247,8 @@ function vincularClickMiniaturas() {
 }
 
 function mostrarErrorDetalle() {
-  document.getElementById('cargando').classList.add('d-none');
-  document.getElementById('error').classList.remove('d-none');
+  document.getElementById('cargando')?.classList.add('d-none');
+  document.getElementById('error')?.classList.remove('d-none');
 }
 
 // Cargar selects y listas
@@ -312,11 +307,11 @@ async function cargarListaProductos() {
               <td>${p.categoria || 'Sin categoría'}</td>
               <td>
                 <button class="btn btn-sm btn-warning me-1"
-                        onclick="editarProducto('${p.id}','${p.nombre}','${p.precio}','${p.categoria_id}')">
+                          onclick="editarProducto('${p.id}','${p.nombre}','${p.precio}','${p.categoria_id}')">
                   ✏️
                 </button>
                 <button class="btn btn-sm btn-danger"
-                        onclick="eliminarProducto('${p.id}')">
+                          onclick="eliminarProducto('${p.id}')">
                   🗑️
                 </button>
               </td>
@@ -361,11 +356,11 @@ async function cargarListaCategorias() {
               <td>${c.nombre}</td>
               <td>
                 <button class="btn btn-sm btn-warning me-1"
-                        onclick="editarCategoria('${c.id}','${c.nombre.replace(/'/g, "\\'")}')">
+                          onclick="editarCategoria('${c.id}','${c.nombre.replace(/'/g, "\\'")}')">
                   ✏️
                 </button>
                 <button class="btn btn-sm btn-danger"
-                        onclick="eliminarCategoria('${c.id}')">
+                          onclick="eliminarCategoria('${c.id}')">
                   🗑️
                 </button>
               </td>
@@ -410,11 +405,11 @@ async function cargarListaImagenes() {
             </td>
             <td>
               <button class="btn btn-sm btn-warning me-1"
-                      onclick="editarImagen('${i.id}','${i.url}','${i.producto_id}')">
+                          onclick="editarImagen('${i.id}','${i.url}','${i.producto_id}')">
                 ✏️
               </button>
               <button class="btn btn-sm btn-danger"
-                      onclick="eliminarImagen('${i.id}')">
+                          onclick="eliminarImagen('${i.id}')">
                 🗑️
               </button>
             </td>
@@ -535,6 +530,8 @@ document.addEventListener('DOMContentLoaded', () => {
     cargarListaImagenes();
     configurarEventListenersCRUD();
   }
+  // Llamar a actualizarNavbar para manejar el estado de login/logout en la barra
+  actualizarNavbar(); 
 });
 
 function actualizarNavbar() {
@@ -607,9 +604,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (registroForm) {
         registroForm.addEventListener('submit', registrarUsuario);
     }
+    
+    // Llamar a checkAuth en cada carga de página (si es necesario)
+    checkAuth(); 
 });
-document.addEventListener('DOMContentLoaded', function() {
-  // Verificar autenticación en cada página excepto login
-  actualizarNavbar
-
-});
+// La última línea 'actualizarNavbar' está incompleta y no es necesaria en el DOMContentLoaded principal
+// ya que se llama en el primer DOMContentLoaded (línea 473)
+// Eliminando la duplicidad y el código incompleto.

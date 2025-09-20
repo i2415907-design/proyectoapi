@@ -33,9 +33,6 @@ app.get('/', (req, res) => {
 
 // Iniciar servidor
 app.listen(PORT, () => {
-<<<<<<< HEAD
   console.log(`✅ Servidor corriendo en https://proyectoapi-y5uq.onrender.com:${PORT}`);
-=======
   console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
->>>>>>> ddff8a15223f5c051e0a74c04fc6af3bf4f8f155
 });
