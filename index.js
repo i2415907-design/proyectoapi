@@ -1,9 +1,13 @@
-// index.js - Versión corregida
+// index.js - Versión final y corregida
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+
+// Carga las variables de entorno de .env (en local) o usa el valor de Render (en producción)
+require('dotenv').config();
+
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // <-- ¡USAR EL PUERTO DE RENDER!
 
 // Middlewares
 app.use(cors());
@@ -19,7 +23,7 @@ const usuarioRoutes = require('./routes/usuario');
 app.use('/categorias', categoriasRoutes);
 app.use('/productos', productosRoutes);
 app.use('/imagenes', imagenesRoutes);
-app.use('/usuario', usuarioRoutes.router); // Acceder al router exportado
+app.use('/usuario', usuarioRoutes.router);
 
 // Ruta de prueba
 app.get('/test', (req, res) => {
@@ -33,6 +37,5 @@ app.get('/', (req, res) => {
 
 // Iniciar servidor
 app.listen(PORT, () => {
-  console.log(`✅ Servidor corriendo en https://proyectoapi-y5uq.onrender.com:${PORT}`);
-  console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`✅ Servidor corriendo en el puerto ${PORT}`);
 });
