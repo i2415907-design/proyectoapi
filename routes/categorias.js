@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { verifyToken } = require('./usuario');
-<<<<<<< HEAD
 const db = require('../db'); // ¡Ahora usa el pool de PostgreSQL!
 
 // RUTAS PÚBLICAS
@@ -12,7 +11,8 @@ router.get('/', async (req, res) => {
         const result = await db.query('SELECT * FROM categorias');
         res.json(result.rows); 
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        // En un entorno de producción, es mejor no exponer err.message directamente
+        res.status(500).json({ error: 'Error al obtener categorías.' });
     }
 });
 
@@ -22,8 +22,6 @@ router.get('/', async (req, res) => {
 router.post('/', verifyToken, async (req, res) => {
     const { nombre } = req.body;
     try {
-        // 1. Cambiado de '?' a $1
-        // 2. Añadido RETURNING id para obtener el ID recién creado
         const queryText = 'INSERT INTO categorias (nombre) VALUES ($1) RETURNING id';
         const result = await db.query(queryText, [nombre]);
         
@@ -31,7 +29,7 @@ router.post('/', verifyToken, async (req, res) => {
         const newId = result.rows[0].id;
         res.json({ id: newId, nombre });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ error: 'Error al crear la categoría.' });
     }
 });
 
@@ -40,12 +38,15 @@ router.put('/:id', verifyToken, async (req, res) => {
     const { id } = req.params;
     const { nombre } = req.body;
     try {
-        // 1. Cambiado de '?' a $1 y $2
         const queryText = 'UPDATE categorias SET nombre = $1 WHERE id = $2';
-        await db.query(queryText, [nombre, id]);
+        const result = await db.query(queryText, [nombre, id]);
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Categoría no encontrada.' });
+        }
         res.json({ id, nombre });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ error: 'Error al actualizar la categoría.' });
     }
 });
 
@@ -53,58 +54,16 @@ router.put('/:id', verifyToken, async (req, res) => {
 router.delete('/:id', verifyToken, async (req, res) => {
     const { id } = req.params;
     try {
-        // 1. Cambiado de '?' a $1
         const queryText = 'DELETE FROM categorias WHERE id = $1';
-        await db.query(queryText, [id]);
+        const result = await db.query(queryText, [id]);
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Categoría no encontrada.' });
+        }
         res.json({ mensaje: 'Categoría eliminada' });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ error: 'Error al eliminar la categoría.' });
     }
-=======
-const db = require('../db');
-
-// RUTAS PÚBLICAS
-router.get('/', async (req, res) => {
-  try {
-    console.log('Acceso público a /categorias');
-    const [rows] = await db.query('SELECT * FROM categorias');
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// RUTAS PRIVADAS
-router.post('/', verifyToken, async (req, res) => {
-  const { nombre } = req.body;
-  try {
-    const [result] = await db.query('INSERT INTO categorias (nombre) VALUES (?)', [nombre]);
-    res.json({ id: result.insertId, nombre });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.put('/:id', verifyToken, async (req, res) => {
-  const { id } = req.params;
-  const { nombre } = req.body;
-  try {
-    await db.query('UPDATE categorias SET nombre = ? WHERE id = ?', [nombre, id]);
-    res.json({ id, nombre });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.delete('/:id', verifyToken, async (req, res) => {
-  const { id } = req.params;
-  try {
-    await db.query('DELETE FROM categorias WHERE id = ?', [id]);
-    res.json({ mensaje: 'Categoría eliminada' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
->>>>>>> ddff8a15223f5c051e0a74c04fc6af3bf4f8f155
 });
 
 module.exports = router;
